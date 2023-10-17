@@ -126,7 +126,7 @@ class OrderController {
 
 
 	 @PostMapping("/applyDiscount")
-	 String applyDiscount(@RequestParam("discount") String discount) {
+	 String applyDiscount(@RequestParam("discount") String discount, @ModelAttribute Cart cart) {
 		 
 		 if ("Hallo123".equals(discount)) {
 			 
