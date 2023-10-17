@@ -52,6 +52,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 class OrderController {
 
 	private final OrderManagement<Order> orderManagement;
+	private String discountCode;
 
 	/**
 	 * Creates a new {@link OrderController} with the given {@link OrderManagement}.
@@ -122,6 +123,32 @@ class OrderController {
 	 * @param userAccount will never be {@literal null}.
 	 * @return the view name.
 	 */
+
+
+	 @PostMapping("/applyDiscount")
+	 String applyDiscount(@RequestParam("discount") String discount) {
+		 
+		 if ("Hallo123".equals(discount)) {
+			 
+			 double discountPercentage = 0.10; 
+	 
+			 
+			 cart.forEach(item -> {
+				 double originalPrice = item.getPrice().getAmount().doubleValue();
+				 double discountedPrice = originalPrice - (originalPrice * discountPercentage);
+				 item.setPrice(Money.of(CurrencyUnit.EUR, discountedPrice));
+			 });
+	 
+			 
+			 double originalTotal = cart.getPrice().getAmount().doubleValue();
+			 double discountedTotal = originalTotal - (originalTotal * discountPercentage);
+			 cart.setPrice(Money.of(CurrencyUnit.EUR, discountedTotal));
+		 }
+	 
+		 return "redirect:/cart";
+	 }
+
+
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount) {
 
