@@ -96,7 +96,7 @@ class OrderController {
 
 		// (｡◕‿◕｡)
 		// Wir fügen dem Warenkorb die Disc in entsprechender Anzahl hinzu.
-		if (Quantity.of(amount).isLessThan(cart.getQuantity(disc)) || Quantity.of(amount).equals(cart.getQuantity(disc))){
+		if (Quantity.of(amount).isGreaterThan(cart.getQuantity(disc)) || Quantity.of(amount).equals(cart.getQuantity(disc))){
 			cart.addOrUpdateItem(disc, Quantity.of(amount));
 		}
 			
