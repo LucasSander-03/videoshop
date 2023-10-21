@@ -131,10 +131,10 @@ class OrderController {
 	 @PostMapping("/applyDiscount")
 	 String applyDiscount(@RequestParam("discount") String discount, @ModelAttribute Cart cart) {
 		 
-		 if ("Hallo123".equals(discount)) {
+		 if ("hallo123".equals(discount)) {
 			
-			cart.getPrice();
-			
+			var discountedPrice=cart.getPrice().multiply(0.9);
+			cart.equals(discountedPrice);
 			
 		 }
 	 
