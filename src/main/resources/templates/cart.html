@@ -13,7 +13,7 @@
                     <tr>
                         <th th:text="#{cart.movieTitle}">Titel</th>
                         <th th:text="#{cart.count}">Anzahl</th>
-                        <th th:text="Harald">Preis</th>
+                        <th th:text="#{cart.price}">Preis</th>
                     </tr>
                     </thead>
                     <tbody th:remove="all-but-first">
@@ -46,7 +46,7 @@
                         <div class="column">
                             <div class="ui horizontal statistic">
                                 <div class="label" th:text="#{cart.total}">Summe</div>
-                                <div class="value"><span th:text="${{cart.price}}">1337</span></div>
+                                <div class="value"><span th:text="${cart.price}">1337</span></div>
                             </div>
                         </div>
                         <div class="column">

@@ -96,7 +96,10 @@ class OrderController {
 
 		// (｡◕‿◕｡)
 		// Wir fügen dem Warenkorb die Disc in entsprechender Anzahl hinzu.
-		cart.addOrUpdateItem(disc, Quantity.of(amount));
+		if (Quantity.of(amount).isLessThan(cart.getQuantity(disc)) || Quantity.of(amount).equals(cart.getQuantity(disc))){
+			cart.addOrUpdateItem(disc, Quantity.of(amount));
+		}
+			
 
 		// (｡◕‿◕｡)
 		// Je nachdem ob disc eine DVD oder eine Bluray ist, leiten wir auf die richtige Seite weiter
@@ -129,20 +132,10 @@ class OrderController {
 	 String applyDiscount(@RequestParam("discount") String discount, @ModelAttribute Cart cart) {
 		 
 		 if ("Hallo123".equals(discount)) {
-			 
-			 double discountPercentage = 0.10; 
-	 
-			 
-			 cart.forEach(item -> {
-				 double originalPrice = item.getPrice().getAmount().doubleValue();
-				 double discountedPrice = originalPrice - (originalPrice * discountPercentage);
-				 item.setPrice(Money.of(CurrencyUnit.EUR, discountedPrice));
-			 });
-	 
-			 
-			 double originalTotal = cart.getPrice().getAmount().doubleValue();
-			 double discountedTotal = originalTotal - (originalTotal * discountPercentage);
-			 cart.setPrice(Money.of(CurrencyUnit.EUR, discountedTotal));
+			
+			cart.getPrice();
+			
+			
 		 }
 	 
 		 return "redirect:/cart";
