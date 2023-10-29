@@ -105,7 +105,10 @@ class OrderController {
 
 		// (｡◕‿◕｡)
 		// Wir fügen dem Warenkorb die Disc in entsprechender Anzahl hinzu.
-		cart.addOrUpdateItem(disc, Quantity.of(amount));
+		if (Quantity.of(amount).isGreaterThan(cart.getQuantity(disc)) || Quantity.of(amount).equals(cart.getQuantity(disc))){
+			cart.addOrUpdateItem(disc, Quantity.of(amount));
+		}
+			
 
 		// (｡◕‿◕｡)
 		// Je nachdem ob disc eine DVD oder eine Bluray ist, leiten wir auf die richtige Seite weiter
