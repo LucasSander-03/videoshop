@@ -16,11 +16,15 @@
 package videoshop.order;
 
 import videoshop.catalog.Disc;
+import videoshop.catalog.Disc.DiscType;
 
 import java.util.Optional;
 
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderManagement;
@@ -39,6 +43,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+
+import static org.salespointframework.core.Currencies.*;
+
 /**
  * A Spring MVC controller to manage the {@link Cart}. {@link Cart} instances are held in the session as they're
  * specific to a certain user. That's also why the entire controller is secured by a {@code PreAuthorize} clause.
@@ -53,16 +60,18 @@ class OrderController {
 
 	private final OrderManagement<Order> orderManagement;
 	private String discountCode;
+	private final UniqueInventory<UniqueInventoryItem> inventory;
 
 	/**
 	 * Creates a new {@link OrderController} with the given {@link OrderManagement}.
 	 *
 	 * @param orderManagement must not be {@literal null}.
 	 */
-	OrderController(OrderManagement<Order> orderManagement) {
+	OrderController(OrderManagement<Order> orderManagement, UniqueInventory<UniqueInventoryItem> inventory) {
 
 		Assert.notNull(orderManagement, "OrderManagement must not be null!");
 		this.orderManagement = orderManagement;
+		this.inventory = inventory;
 	}
 
 	/**
@@ -127,25 +136,15 @@ class OrderController {
 
 	 @PostMapping("/applyDiscount")
 	 String applyDiscount(@RequestParam("discount") String discount, @ModelAttribute Cart cart) {
-		 
-		 if ("Hallo123".equals(discount)) {
-			 
-			 double discountPercentage = 0.10; 
-	 
-			 
-			 cart.forEach(item -> {
-				 double originalPrice = item.getPrice().getAmount().doubleValue();
-				 double discountedPrice = originalPrice - (originalPrice * discountPercentage);
-				 item.setPrice(Money.of(CurrencyUnit.EUR, discountedPrice));
-			 });
-	 
-			 
-			 double originalTotal = cart.getPrice().getAmount().doubleValue();
-			 double discountedTotal = originalTotal - (originalTotal * discountPercentage);
-			 cart.setPrice(Money.of(CurrencyUnit.EUR, discountedTotal));
-		 }
-	 
-		 return "redirect:/cart";
+		
+		inventory.findAll().forEach(item -> {
+			if (item.getProduct().getName().equals("Rabatt")) {
+				if ("Hallo123".equals(discount)) {
+					cart.addOrUpdateItem(item.getProduct(), 1);
+				}
+			}
+		});
+		return "redirect:/cart";
 	 }
 
 

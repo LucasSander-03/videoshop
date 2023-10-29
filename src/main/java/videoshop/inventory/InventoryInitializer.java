@@ -15,6 +15,7 @@
  */
 package videoshop.inventory;
 
+import org.javamoney.moneta.Money;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
@@ -23,7 +24,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import videoshop.catalog.Disc;
+import videoshop.catalog.Disc.DiscType;
 import videoshop.catalog.VideoCatalog;
+
+import static org.salespointframework.core.Currencies.*;
 
 /**
  * A {@link DataInitializer} implementation that will create dummy data for the application on application startup.
@@ -64,7 +69,10 @@ class InventoryInitializer implements DataInitializer {
 			// Try to find an InventoryItem for the project and create a default one with 10 items if none available
 			if (inventory.findByProduct(disc).isEmpty()) {
 				inventory.save(new UniqueInventoryItem(disc, Quantity.of(10)));
+				
 			}
 		});
+		
 	}
 }
+	

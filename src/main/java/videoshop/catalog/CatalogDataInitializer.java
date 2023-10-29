@@ -21,6 +21,8 @@ import videoshop.catalog.Disc.DiscType;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.DataInitializer;
+import org.salespointframework.inventory.UniqueInventoryItem;
+import org.salespointframework.quantity.Quantity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -87,5 +89,6 @@ class CatalogDataInitializer implements DataInitializer {
 		videoCatalog.save(new Disc("Oldboy", "old", Money.of(24.99, EURO), "Action/Drama/Thriller", DiscType.BLURAY));
 		videoCatalog.save(new Disc("Bill & Ted's Excellent Adventure", "bt", Money.of(29.99, EURO),
 				"Adventure/Comedy/Family", DiscType.BLURAY));
+		videoCatalog.save(new Disc("Rabatt", "lac", Money.of(-5, EURO), "Rabatt", DiscType.DVD));
 	}
 }

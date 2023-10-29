@@ -46,6 +46,6 @@ public interface VideoCatalog extends Catalog<Disc> {
 	 * @return the discs of the given type, never {@literal null}.
 	 */
 	default Streamable<Disc> findByType(DiscType type) {
-		return findByType(type, DEFAULT_SORT);
+		return findByType(type, DEFAULT_SORT).filter(item->{return !item.getName().equals("Rabatt");});
 	}
 }
